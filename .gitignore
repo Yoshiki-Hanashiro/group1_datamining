@@ -1,0 +1,5 @@
+#Mac専用ファイル
+.DS_Store
+
+#Windows専用ファイル
+Thumbs.db
