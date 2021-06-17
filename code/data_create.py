@@ -4,12 +4,15 @@
 import pandas as pd
 import numpy as np
 
-timei = 96
-timei_str = "kagoshima"
+#番号とファイル名を変数に
+timei = 97
+timei_str = "naha"
 
-
+#関数化
 def craete(timei, timei_str):
+    #ファイルのパスを相対化
     accident = pd.read_csv('../dataset/honhyo.csv', sep=',', encoding='shift_jis')
+    #header=5と指定してそのままcsvファイルを利用
     rain = pd.read_csv('../dataset/' + timei_str + '_rain.csv', sep=',', encoding='shift_jis',
                        names=('year', 'month', 'day', 'hour', 'rain', 'not', 'quality', 'homogeneous'),header=5)
     temperature = pd.read_csv('../dataset/' + timei_str + '_temp.csv', sep=',', encoding='shift_jis',

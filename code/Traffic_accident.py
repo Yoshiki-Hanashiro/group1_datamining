@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 
+#関数化
 def plotter(timei,timei_str):
     #読み込んだ元データを、データとラベルに分割する。
     accident = pd.read_csv('../dataset/accident_'+ timei_str+'.csv', sep=',')
