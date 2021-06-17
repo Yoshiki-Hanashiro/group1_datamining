@@ -25,10 +25,19 @@ clf.fit(data_train,label_train)
 #学習したモデルを使用して精度を確認する。
 test_pred = clf.predict(data_test)
 difference = np.mean(test_pred - label_test)
-print(difference)
+print("誤差の平均:" + str(difference))
+ave = np.mean(label_test)
+print("一時間当たりの事故の平均は" + str(ave) + "件です。")
+
+image = accident.iloc[:,5:]
+image = image[image['count'] != 0]
 
 fig = plt.figure(figsize=(10,10))
-plt.scatter(data['temperature'], data['rain'], marker = '.')
+plt.scatter(image['temperature'], image['rain'], marker = '.')
+plt.title("Traffic_Accident")
+plt.xlabel("temperature")
+plt.ylabel("rain")
+plt.grid(True)
 fig.savefig("data-mining/Experiment_datamining/G1/group1_datamining/result/img2.png")
 
 
