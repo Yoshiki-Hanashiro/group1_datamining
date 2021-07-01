@@ -6,27 +6,50 @@ from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+#from sklearn.linear_model import SGDRegressor
 
 
 #読み込んだ元データを、データとラベルに分割する。
+#沖縄のみ、かつ事故件数ゼロありデータセット
+#accident = pd.read_csv('data-mining/Experiment_datamining/G1/group1_datamining/dataset/accident_okinawa.csv', sep=',')
+
+#全国、事故件数ゼロなしデータセット
 accident = pd.read_csv('data-mining/Experiment_datamining/G1/group1_datamining/dataset/all.csv', sep=',')
 accident = accident.dropna()
 accident = accident.set_axis(['noname', 'year', 'month', 'day', 'hour', 'rain', 'temperature', 'count'], axis='columns')
 print(accident)
 label = accident['count']
+#rainとtemperatureのみ
 data = accident.iloc[:,5:7]
+#hourを追加
+data = accident.iloc[:,4:7]
 print(accident.isnull().sum())
+
+#標準化
+'''
+scaler = StandardScaler()
+data = scaler.fit_transform(data)
+print(np.mean(data[:, 0]), np.mean(data[:, 1]))
+print(np.std(data[:, 0]), np.std(data[:, 1]))
+'''
 
 #データを学習用とテスト用に分割する。今回はデータの半数を学習用とする。
 data_train,data_test,label_train,label_test = train_test_split(data,label,test_size = 0.5)
 
-#データをLinearSVCを使用して学習する。
+#SGDRegressorを使用して学習する
+'''
+model = SGDRegressor(max_iter=1000)
+model.fit(data_train,label_train)
+'''
+
+#データをSVRを使用して学習する。
 model = svm.SVR(C=1.0, kernel='linear', epsilon=0.1)
 model.fit(data_train,label_train)
 
 #学習したモデルを使用して精度を確認する。
 test_pred = model.predict(data_test)
-difference = np.mean(abs(test_pred - label_test))
+difference = np.mean(test_pred - label_test)
 print("誤差の平均:" + str(difference))
 ave = np.mean(label_test)
 print("一時間当たりの事故の平均は" + str(ave) + "件です。")
