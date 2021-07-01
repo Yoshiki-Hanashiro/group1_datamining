@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("honhyo_2019.csv", encoding="shift-jis")#データセットを読み込む
+df = pd.read_csv("data-mining/Experiment_datamining/G1/group1_datamining/dataset/honhyo.csv", encoding="shift-jis")#データセットを読み込む
 
 #pd.set_option('display.max_columns', 50)#表示する列数を設定、今回は11列
 print(df.head())#上から5つ表示
