@@ -15,7 +15,7 @@ from sklearn.preprocessing import StandardScaler
 #accident = pd.read_csv('data-mining/Experiment_datamining/G1/group1_datamining/dataset/accident_okinawa.csv', sep=',')
 
 #全国、事故件数ゼロなしデータセット
-accident = pd.read_csv('data-mining/Experiment_datamining/G1/group1_datamining/dataset/all.csv', sep=',')
+accident = pd.read_csv('../dataset/all.csv', sep=',')
 accident = accident.dropna()
 accident = accident.set_axis(['noname', 'year', 'month', 'day', 'hour', 'rain', 'temperature', 'count'], axis='columns')
 print(accident)
