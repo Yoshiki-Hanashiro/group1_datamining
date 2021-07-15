@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import SGDRegressor
+from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
@@ -19,9 +20,50 @@ print(accident.isnull().sum())
 #データを学習用とテスト用に分割する。今回はデータの半数を学習用とする。
 data_train,data_test,label_train,label_test = train_test_split(data,label,test_size = 0.5)
 
+"""
 #データをLinearSVCを使用して学習する。
 clf = SGDRegressor(max_iter=1000)
 clf.fit(data_train,label_train)
+"""
+
+# サポートベクターマシンによる学習
+clf = svm.SVR(C=1.0, kernel='sigmoid', gamma='auto', epsilon=0.1)
+clf.fit(data_train, label_train)
+
+# 学習済モデルを使って予測
+grid_line = np.arange(0, 50, 2) # 回帰式の軸を作成
+X2, Y2 = np.meshgrid(grid_line, grid_line) # グリッドを作成
+Z2 = clf.predict(np.array([X2.ravel(), Y2.ravel()]).T) # 予測
+Z2 = Z2.reshape(X2.shape)                                         # プロット用にデータshapeを変換
+r2 = clf.score(data_train, label_train)                                            # 決定係数算出
+
+# ここからグラフ描画----------------------------------------------------------------
+# フォントの種類とサイズを設定する。
+plt.rcParams['font.size'] = 14
+plt.rcParams['font.family'] = 'Times New Roman'
+
+#  グラフの入れ物を用意する。
+fig = plt.figure()
+ax1 = Axes3D(fig)
+
+# 軸のラベルを設定する。
+ax1.set_xlabel('temperature')
+ax1.set_ylabel('rain')
+ax1.set_zlabel('Traffic_Accident')
+
+# データプロットする。
+ax1.scatter3D(data_test['temperature'], data_test['rain'], label_test, label='Dataset')
+ax1.plot_wireframe(X2, Y2, Z2, label='Regression plane K=sigmoid', color = 'red')
+plt.legend()
+
+# グラフ内に決定係数を記入
+ax1.text(0.0, 0.0, 300, zdir=(1,1,0), s='$\ R^{2}=$' + str(round(r2, 2)), fontsize=20)
+
+# グラフを表示する。
+plt.show()
+fig.savefig("group1_datamining/result/img3.png")
+plt.close()
+# ---------------------------------------------------------------------------------
 
 #学習したモデルを使用して精度を確認する。
 test_pred = clf.predict(data_test)
@@ -41,6 +83,7 @@ plt.ylabel("rain")
 plt.grid(True)
 fig.savefig("group1_datamining/result/img2.png")
 
+"""
 #結果をプロットする(回帰平面)------------------------------------------------
 # パラメータ算出
 reg_wn = clf.coef_ # 偏回帰係数
@@ -78,7 +121,7 @@ plt.legend()
 # グラフを表示する。
 plt.show()
 fig.savefig("group1_datamining/result/img3.png")
-
+"""
 
 """
 #解説 6：結果をプロットする------------------------------------------------
