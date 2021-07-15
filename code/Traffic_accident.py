@@ -7,8 +7,10 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
-#from sklearn.linear_model import SGDRegressor
-
+from sklearn.linear_model import SGDRegressor
+from sklearn.metrics import mean_squared_error
+from math import sqrt
+from sklearn.metrics import mean_absolute_error
 
 #読み込んだ元データを、データとラベルに分割する。
 #沖縄のみ、かつ事故件数ゼロありデータセット
@@ -27,30 +29,45 @@ data = accident.iloc[:,4:7]
 print(accident.isnull().sum())
 
 #標準化
-'''
+
 scaler = StandardScaler()
 data = scaler.fit_transform(data)
-print(np.mean(data[:, 0]), np.mean(data[:, 1]))
-print(np.std(data[:, 0]), np.std(data[:, 1]))
-'''
+#print(np.mean(data[:, 0]), np.mean(data[:, 1]))
+#print(np.std(data[:, 0]), np.std(data[:, 1]))
 
 #データを学習用とテスト用に分割する。今回はデータの半数を学習用とする。
 data_train,data_test,label_train,label_test = train_test_split(data,label,test_size = 0.5)
 
 #SGDRegressorを使用して学習する
-'''
-model = SGDRegressor(max_iter=1000)
+
+model = SGDRegressor(learning_rate='adaptive')
 model.fit(data_train,label_train)
-'''
+
 
 #データをSVRを使用して学習する。
+'''
 model = svm.SVR(C=1.0, kernel='linear', epsilon=0.1)
 model.fit(data_train,label_train)
+'''
 
 #学習したモデルを使用して精度を確認する。
 test_pred = model.predict(data_test)
 difference = np.mean(test_pred - label_test)
 print("誤差の平均:" + str(difference))
+
+#MSE:二乗誤差の平均
+mse = mean_squared_error(label_test, test_pred)
+print("MSE:" + str(mse))
+
+#RMSE:MSEの平方根をとった指標
+rmse = sqrt(mean_squared_error(label_test, test_pred))
+print("RMSE:" + str(rmse))
+
+#MAE:誤差の絶対値の平均，外れ値の影響無視したい時
+mae = mean_absolute_error(label_test, test_pred)
+print("MAE:" + str(mae))
+
+
 ave = np.mean(label_test)
 print("一時間当たりの事故の平均は" + str(ave) + "件です。")
 
@@ -63,7 +80,7 @@ plt.title("Traffic_Accident")
 plt.xlabel("temperature")
 plt.ylabel("rain")
 plt.grid(True)
-fig.savefig("data-mining/Experiment_datamining/G1/group1_datamining/result/img2.png")
+fig.savefig("../../group1_datamining/result/img2.png")
 
 
 
