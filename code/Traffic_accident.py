@@ -26,12 +26,12 @@ clf = SGDRegressor(max_iter=1000)
 clf.fit(data_train,label_train)
 """
 
-# サポートベクターマシンによる学習
-clf = svm.SVR(C=1.0, kernel='sigmoid', gamma='auto', epsilon=0.1)
+# サポートベクターマシン(SVR)による学習
+clf = svm.SVR(C=1.0, kernel='sigmoid', gamma='auto', epsilon=0.5)
 clf.fit(data_train, label_train)
 
 # 学習済モデルを使って予測
-grid_line = np.arange(0, 50, 2) # 回帰式の軸を作成
+grid_line = np.arange(0, 50, 3) # 回帰式の軸を作成
 X2, Y2 = np.meshgrid(grid_line, grid_line) # グリッドを作成
 Z2 = clf.predict(np.array([X2.ravel(), Y2.ravel()]).T) # 予測
 Z2 = Z2.reshape(X2.shape)                                         # プロット用にデータshapeを変換
