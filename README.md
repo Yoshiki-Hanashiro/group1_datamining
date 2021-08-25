@@ -1,6 +1,8 @@
 # group1_datamining
 グループ1データマイニング
 
+master：README及びレポートが置かれているブランチ
+
 開発ブランチはdevelop
 
 developから開発したい機能を実装するブランチへと派生させている。
